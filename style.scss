@@ -11,9 +11,9 @@ body {
     margin: 0;
 }
 .container {
-    font-family: $primary-font-1;
     .top-bar {
         width: 100%;
+        font-family: $primary-font-1;
         color: white;
         background-color: $top-bar;
         height: 48px;
@@ -60,7 +60,7 @@ body {
         }
         .fa-user-circle {
             vertical-align: top;
-            font-size: 32px;
+            font-size: 30px;
             margin-top: 8px;
         }
     }
@@ -71,23 +71,43 @@ body {
         
         .left-div {
             padding-top: 70px;
+            position: relative;
             vertical-align: top;
             margin: 0;
             width: 21.2%;
-            height: 609px;
+            height: 540px;
             background-color: $left-div;
             border: none;
-            box-shadow: 1px 0px black;
+            box-shadow: 1px 0px $box-shadow;
+            letter-spacing: 1px;
             #left-details {
                 list-style-type: none;
                 padding-left: 0;
+                font-size: 14px;
                 .list-element {
-                    padding-top: 9px;
-                    padding-bottom: 9px;
-                    
+                    padding-top: 10px;
+                    padding-bottom: 10px;  
                 }
                 .list-element:hover {
                     background-color: white;
+                }
+                .fa-sun, .fa-star, .fa-calendar-alt, .fa-user, .fa-home, .fa-list-ul {
+                    padding-left: 16px;
+                    padding-right: 16px;
+                }
+            }
+            .bottom-icons {
+                width: 100%;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                color: #2e3033;
+                .bottom-icon {
+                    padding-left: 6%;
+                    padding-right: 6%;
+                    padding-top: 18px;
+                    padding-bottom: 18px;
+                    font-size: 17px;
                 }
             }
             .input-container:hover {
@@ -98,7 +118,6 @@ body {
                 padding-top: 8px;
                 padding-bottom: 8px;
                 padding-right: 13px;
-                font-size: 15px;
             }
             
             #add-element {
@@ -114,5 +133,6 @@ body {
                 outline: none;
             }
         }
+        
     }
 }   

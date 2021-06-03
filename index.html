@@ -3,10 +3,41 @@
   <head>
     <title>
       To-do
-    </title>
+    </title>    
+    <script src="https://kit.fontawesome.com/11a2597a72.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
 <body>
-
-
+  <div class="container">
+    <div class="top-bar">
+      <i class="fas fa-bars"></i>
+      <div class="to-do">To Do</div>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+      </div>
+      <i class="fas fa-cog"></i>
+      <i class="fas fa-question"></i>
+      <i class="far fa-comment-alt"></i>
+      <i class="far fa-user-circle"></i> 
+    </div>
+    <div class="main-page">
+      <div class="left-div">
+        <ul id="left-details"></ul>
+        <div class="input-container">
+          <i class="fas fa-plus"></i>
+          <input id="add-element" placeholder="New List" type="text"
+           onkeypress="newListElement(event)">
+        </div>
+        <div class="bottom-icons">
+          <i class="far fa-envelope bottom-icon"></i>
+          <i class="far fa-calendar-alt bottom-icon"></i>
+          <i class="fas fa-user-friends bottom-icon"></i>
+          <i class="fas fa-paperclip bottom-icon"></i>
+          <i class="fas fa-check bottom-icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
+<script type="text/javascript" src="script.js"></script>
