@@ -7,6 +7,12 @@
     margin-left: 1.2%;
     margin-right: 1.2%;
 }
+@mixin center-div {
+    display: inline-block;
+    height: 609px;
+    padding: 25px 20px 0px 25px;
+    vertical-align: top;
+}
 body {
     margin: 0;
 }
@@ -20,23 +26,16 @@ body {
         .fa-bars {
             margin-right: 2%; 
             vertical-align: top;
-            margin-top: 16px;
-            margin-bottom: 16px;
+            margin: 16px 1.5% 16px 1.2%;
             font-size: 17px;
-            margin-left: 1.2%;
-            margin-right: 1.5%;
         }
         .to-do {
             display: inline-block;
             vertical-align: top;
-            
             font-size: 15px;
             font-weight: 500;
-            margin-top: 17px;
-            margin-bottom: 17px;
+            margin: 17px 25% 17px 0;
             width: 3%;
-            margin-right: 25%;
-            margin-left: 0;
         }
         .search-box {
             width: 29%;
@@ -68,7 +67,6 @@ body {
         width: 100%;
         vertical-align: top;
         margin: 0;
-        
         .left-div {
             padding-top: 70px;
             position: relative;
@@ -80,13 +78,14 @@ body {
             border: none;
             box-shadow: 1px 0px $box-shadow;
             letter-spacing: 1px;
+            display: inline-block;
             #left-details {
                 list-style-type: none;
                 padding-left: 0;
                 font-size: 14px;
                 .list-element {
                     padding-top: 10px;
-                    padding-bottom: 10px;  
+                    padding-bottom: 10px;
                 }
                 .list-element:hover {
                     background-color: white;
@@ -110,29 +109,95 @@ body {
                     font-size: 17px;
                 }
             }
+            .input-container {
+                .fa-plus {
+                    padding-left: 16px;
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                    padding-right: 13px;
+                    color: $top-bar;
+                }
+                ::placeholder {
+                    color: $top-bar;
+                }
+                #add-element {
+                    border: none;
+                    background-color: $left-div;
+                    padding-top: 9px;
+                    padding-bottom: 9px;;
+                }
+                #add-element:hover {
+                    background-color: white;
+                }
+                input:focus, textarea:focus, select:focus{
+                    outline: none;
+                }
+            }
             .input-container:hover {
                 background-color: white;
             }
-            .fa-plus {
-                padding-left: 16px;
-                padding-top: 8px;
-                padding-bottom: 8px;
-                padding-right: 13px;
-            }
-            
-            #add-element {
-                border: none;
-                background-color: $left-div;
-                padding-top: 9px;
-                padding-bottom: 9px;
-            }
-            #add-element:hover {
-                background-color: white;
-            }
-            input:focus, textarea:focus, select:focus{
-                outline: none;
+            .input-container:focus {
+                color: #2e3033;
             }
         }
-        
+        .full-width {
+            width: 75%;
+        }
+        .half-width {
+            width: 52%;
+        }
+        .center-div {
+            @include center-div;
+            margin: 0;
+            #task-list {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                .task-element {
+                    color: red;
+                    padding-top: 17px;
+                    padding-bottom: 17px;
+                    border: none;
+                    box-shadow: 0px 1px $left-div;
+                }
+                .empty-element {
+                    padding-top: 26px;
+                    padding-bottom: 26px;
+                    border: none;
+                    box-shadow: 0px 1px $left-div;
+                }
+            }
+            .header {
+                color: $top-bar;
+                margin: 0;
+                font-family: $left-div-font-1;
+                padding-bottom: 10px;
+            }
+            .task-input {
+                box-shadow: 0px 1px $left-div;
+                padding-bottom: 17px;
+                padding-top: 17px;
+                #add-task {
+                    border: none;
+                    padding-left: 15px;
+                }
+                input:focus, textarea:focus, select:focus{
+                    outline: none;
+                }
+                .remove-add {
+                    display: none;
+                }
+                .show-add {
+                    display: inline-block;
+                }
+            }
+        }
+        #right-div {
+            background-color: $left-div;
+            width: 22%;
+            display: none;
+            height: 600px;
+            vertical-align: top;
+        }
     }
 }   
