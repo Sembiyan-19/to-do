@@ -15,7 +15,6 @@
       <div class="search-box">
         <i class="fas fa-search"></i>
       </div>
-      
       <i class="fas fa-cog"></i>
       <i class="fas fa-question"></i>
       <i class="far fa-comment-alt"></i>
@@ -30,7 +29,7 @@
            onkeypress="newListElement(event)">
         </div>
         <div class="bottom-icons">
-          <i class="far fa-envelope bottom-icon"></i>
+          <i class="far fa-envelope bottom-icon" id="qwert"></i>
           <i class="far fa-calendar-alt bottom-icon"></i>
           <i class="fas fa-user-friends bottom-icon"></i>
           <i class="fas fa-paperclip bottom-icon"></i>
@@ -40,17 +39,48 @@
       <div class="center-div full-width" id="center-div">
         <h3 id="heading" class="header"></h3>
         <div class="task-input">
-          <i class="fas fa-plus"></i>
+          <i id="add-task-icon" class="fas fa-plus"></i>
           <input id="add-task" onkeypress="newTask(event)" placeholder="Add a task">
-          <div class="remove-add" id="add-button">Add</div>
+          <div class="remove-add" id="add-button">ADD</div>
         </div>
         <ul id="task-list"></ul>
       </div>
       <div id="right-div">
-        <div id="dummy">
-          <h4 id="task-heading"></h4>
+        <div id="steps-container">
+          <div id="steps-header">
+          </div>
           <ul id="steps-list"></ul>
-          <div><input placeholder="Add step"></div>
+          <div class="step-input">
+            <i id="add-step-icon" class="fas fa-plus"></i>
+            <input id="add-step" placeholder="Add step" onkeypress="newStep(event)">
+            <div class="remove-add" id="add-step-button">ADD</div>
+          </div>
+        </div>
+        <div class="add-to-my-day-container">
+          <i class="far fa-sun"></i>
+          <span id="add-to-my-day">Add to my day</span>
+        </div>
+        <div class="option-container">
+          <div class="option-element">
+            <i class="far fa-bell"></i>
+            <span>Add to my day</span>
+          </div>
+          <div class="option-element">
+            <i class="far fa-calendar-alt"></i>
+            <span>Add to my day</span>
+          </div>
+          <div class="option-element">
+            <i class="far fa-clock"></i>
+            <span>Add to my day</span>
+          </div>
+        </div>
+        <div class="add-to-my-day-container">
+          <i class="far fa-sun"></i>
+          <span>Add to my day</span>
+        </div>
+        <div class="add-to-my-day-container">
+          <i class="far fa-sun"></i>
+          <span>Add to my day</span>
         </div>
       </div>
     </div>
