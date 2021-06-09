@@ -8,10 +8,10 @@
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
 <body>
-  <div class="container">
+  <div class="page-container">
     <div class="top-bar">
       <i class="fas fa-bars"></i>
-      <div class="to-do">To Do</div>
+      <div class="to-do-text">To Do</div>
       <div class="search-box">
         <i class="fas fa-search"></i>
       </div>
@@ -20,16 +20,16 @@
       <i class="far fa-comment-alt"></i>
       <i class="far fa-user-circle"></i> 
     </div>
-    <div class="main-page">
+    <div class="main-container">
       <div class="left-div">
-        <ul id="left-details"></ul>
+        <ul id="elements-list"></ul>
         <div class="input-container">
           <i class="fas fa-plus"></i>
-          <input id="add-element" placeholder="New List" type="text"
+          <input id="input-element" placeholder="New List" type="text"
            onkeypress="newListElement(event)">
         </div>
         <div class="bottom-icons">
-          <i class="far fa-envelope bottom-icon" id="qwert"></i>
+          <i class="far fa-envelope bottom-icon"></i>
           <i class="far fa-calendar-alt bottom-icon"></i>
           <i class="fas fa-user-friends bottom-icon"></i>
           <i class="fas fa-paperclip bottom-icon"></i>
@@ -38,10 +38,10 @@
       </div>
       <div class="center-div full-width" id="center-div">
         <h3 id="heading" class="header"></h3>
-        <div class="task-input">
+        <div class="task-input-container">
           <i id="add-task-icon" class="fas fa-plus"></i>
-          <input id="add-task" onkeypress="newTask(event)" placeholder="Add a task">
-          <div class="remove-add" id="add-button">ADD</div>
+          <input id="task-input" onkeypress="newTask(event)" placeholder="Add a task">
+          <div class="hide-add-button" id="add-button">ADD</div>
         </div>
         <ul id="task-list"></ul>
       </div>
@@ -52,35 +52,35 @@
           <ul id="steps-list"></ul>
           <div class="step-input">
             <i id="add-step-icon" class="fas fa-plus"></i>
-            <input id="add-step" placeholder="Add step" onkeypress="newStep(event)">
-            <div class="remove-add" id="add-step-button">ADD</div>
+            <input id="step-input" placeholder="Add step" onkeypress="newStep(event)">
+            <div class="hide-add-button" id="add-step-button">ADD</div>
           </div>
         </div>
-        <div class="add-to-my-day-container">
+        <div class="other-option">
           <i class="far fa-sun"></i>
           <span id="add-to-my-day">Add to my day</span>
         </div>
         <div class="option-container">
           <div class="option-element">
             <i class="far fa-bell"></i>
-            <span>Add to my day</span>
+            <span>Remaind me</span>
           </div>
           <div class="option-element">
             <i class="far fa-calendar-alt"></i>
-            <span>Add to my day</span>
+            <span>Add due date</span>
           </div>
           <div class="option-element">
             <i class="far fa-clock"></i>
-            <span>Add to my day</span>
+            <span>Repeat</span>
           </div>
         </div>
-        <div class="add-to-my-day-container">
+        <div class="other-option">
           <i class="far fa-sun"></i>
-          <span>Add to my day</span>
+          <span>Pick a category</span>
         </div>
-        <div class="add-to-my-day-container">
+        <div class="other-option">
           <i class="far fa-sun"></i>
-          <span>Add to my day</span>
+          <span>Add file</span>
         </div>
       </div>
     </div>

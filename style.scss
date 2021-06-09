@@ -1,31 +1,24 @@
 @import "color";
 @import "fonts";
-@mixin icons {
-    vertical-align: top;
-    font-size: 17px;
-    margin-top: 16px;
-    margin-left: 1.2%;
-    margin-right: 1.2%;
-}
 @mixin center-div {
     display: inline-block;
     height: 609px;
     padding: 25px 20px 0px 25px;
     vertical-align: top;
 }
-@mixin circle-icon {
-    color: $top-bar;
+@mixin check-icon {
+    color: $primary-blue;
     padding-right: 17px
 }
 body {
     margin: 0;
 }
-.container {
+.page-container {
     .top-bar {
         width: 100%;
-        font-family: $primary-font-1;
+        font-family: $primary-font;
         color: white;
-        background-color: $top-bar;
+        background-color: $primary-blue;
         height: 48px;
         .fa-bars {
             margin-right: 2%; 
@@ -33,7 +26,7 @@ body {
             margin: 16px 1.5% 16px 1.2%;
             font-size: 17px;
         }
-        .to-do {
+        .to-do-text {
             display: inline-block;
             vertical-align: top;
             font-size: 15px;
@@ -52,14 +45,18 @@ body {
             .fa-search {
                 margin-top: 8px;
                 margin-left: 8px;
-                color: $top-bar;
+                color: $primary-blue;
             }
         }
         .search-box:hover {
             background-color: white;
         }
         .fa-cog, .fa-question, .fa-comment-alt {
-            @include icons;
+            vertical-align: top;
+            font-size: 17px;
+            margin-top: 16px;
+            margin-left: 1.2%;
+            margin-right: 1.2%;
         }
         .fa-user-circle {
             vertical-align: top;
@@ -67,18 +64,18 @@ body {
             margin-top: 8px;
         }
     }
-    .main-page {
+    .main-container {
         width: 100%;
         vertical-align: top;
         margin: 0;
-        background-color: $left-div;
+        background-color: $primary-gray;
         .important-checked {
-            color: $top-bar
+            color: $primary-blue
         }
-        .remove-add {
+        .hide-add-button {
             display: none;
         }
-        .show-add {
+        .display-add-button {
             display: inline-block;
         }
         .left-div {
@@ -88,11 +85,11 @@ body {
             margin: 0;
             width: 21.2%;
             height: 540px;
-            background-color: $left-div;
+            background-color: $primary-gray;
             border: none;
             letter-spacing: 1px;
             display: inline-block;
-            #left-details {
+            #elements-list {
                 list-style-type: none;
                 padding-left: 0;
                 font-size: 14px;
@@ -115,31 +112,25 @@ body {
                 left: 0;
                 color: #2e3033;
                 .bottom-icon {
-                    padding-left: 6%;
-                    padding-right: 6%;
-                    padding-top: 18px;
-                    padding-bottom: 18px;
+                    padding: 18px 6% 18px 6%;
                     font-size: 17px;
                 }
             }
             .input-container {
                 .fa-plus {
-                    padding-left: 16px;
-                    padding-top: 8px;
-                    padding-bottom: 8px;
-                    padding-right: 13px;
-                    color: $top-bar;
+                    padding: 8px 13px 8px 16px;
+                    color: $primary-blue;
                 }
                 ::placeholder {
-                    color: $top-bar;
+                    color: $primary-blue;
                 }
-                #add-element {
+                #input-element {
                     border: none;
-                    background-color: $left-div;
+                    background-color: $primary-gray;
                     padding-top: 9px;
                     padding-bottom: 9px;;
                 }
-                #add-element:hover {
+                #input-element:hover {
                     background-color: white;
                 }
                 input:focus, textarea:focus, select:focus{
@@ -165,21 +156,24 @@ body {
             height: 580px;
             background-color: white;
             .fa-circle {
-                @include circle-icon;
+                @include check-icon;
                 font-size: 18px;
             }
             #task-list {
                 list-style-type: none;
                 padding: 0;
                 margin: 0;
+                .task-element:hover {
+                    background-color: $primary-gray;
+                }
                 .task-element {
                     padding-top: 18px;
                     padding-bottom: 18px;
                     border: none;
-                    box-shadow: 0px 1px $left-div;
+                    box-shadow: 0px 1px $box-shadow;
                     position: relative;
                     font-size: 14px;
-                    font-family: $primary-font-1;
+                    font-family: $primary-font;
                     .fa-star {
                         position: absolute;
                         right: 0;
@@ -188,9 +182,8 @@ body {
                         margin-bottom: 15px;
                         margin-right: 5px;
                     }
-                    
                     .fa-check-circle {
-                        @include circle-icon;
+                        @include check-icon;
                         font-size: 18px;
                     }
                 }
@@ -198,30 +191,30 @@ body {
                     padding-top: 26px;
                     padding-bottom: 26px;
                     border: none;
-                    box-shadow: 0px 1px $left-div;
+                    box-shadow: 0px 1px $box-shadow;
                 }
             }
             .header {
-                color: $top-bar;
+                color: $primary-blue;
                 margin: 0;
-                font-family: $left-div-font-1;
+                font-family: $primary-font;
                 padding-bottom: 10px;
             }
-            .task-input {
-                box-shadow: 0px 1px black;
+            .task-input-container {
+                box-shadow: 0px 1px $box-shadow;
                 padding-bottom: 17px;
                 padding-top: 17px;
                 position: relative;
-                color: $top-bar;
+                color: $primary-blue;
                 .fa-plus {
                     padding-right: 17px;
                 }
                 ::placeholder {
-                    color: $top-bar;
+                    color: $primary-blue;
                 }
-                #add-task {
+                #task-input {
                     border: none;
-                    font-family: $primary-font-1;
+                    font-family: $primary-font;
                     font-size: 14px;
                     margin: 0;
                     padding: 0;
@@ -236,7 +229,7 @@ body {
                     right: 0;
                     margin-bottom: 15px;
                     margin-left: 5px;
-                    color: $top-bar;
+                    color: $primary-blue;
                     font-size: 11px;
                 }
             }
@@ -255,17 +248,17 @@ body {
                     position: relative;
                     padding: 18px 20px 18px 0;
                     .fa-circle {
-                        @include circle-icon;
+                        @include check-icon;
                         font-size: 18px;
                         margin-left: 15px;
                     }
                     .fa-check-circle {
-                        @include circle-icon;
+                        @include check-icon;
                         font-size: 18px;
                         margin-left: 15px;
-                        color: $top-bar;
+                        color: $primary-blue;
                     }
-                    #task-heading {
+                    .task-heading {
                         display: inline-block;
                         margin: 0;
                     }
@@ -285,10 +278,10 @@ body {
                         bottom: 0;
                         right: 0;
                         margin-bottom: 10px;
-                        color: $top-bar;
+                        color: $primary-blue;
                         font-size: 11px;
                     }
-                    #add-step {
+                    #step-input {
                         border: none;
                         padding-top: 12px;
                         padding-bottom: 12px;
@@ -312,11 +305,14 @@ body {
                     border: none;
                     margin: 0;
                     padding: 0;
+                    .step-element:hover {
+                        background-color: $primary-gray;
+                    }
                     .step-element {
                         .step-content {
                             display: inline-block;
                             width: 80%;
-                            box-shadow: 0px 1px $left-div;
+                            box-shadow: 0px 1px $box-shadow;
                             padding-top: 10px;
                             padding-bottom: 10px;
                         }
@@ -328,7 +324,7 @@ body {
                     }
                 }
             }
-            .add-to-my-day-container {
+            .other-option {
                 width: 95%;
                 background-color: white;
                 margin-top: 10px;
@@ -337,7 +333,7 @@ body {
                 padding-bottom: 15px;
                 color: grey;
                 margin: 10px auto;
-                font-size: 16px;
+                font-size: 15px;
                 .fa-sun {
                     margin-left: 18px;
                     margin-right: 18px;
@@ -345,7 +341,7 @@ body {
             }
             .option-container {
                 margin: 10px auto;
-                font-size: 13px;
+                font-size: 15px;
                 .far {
                     margin-left: 18px;
                     margin-right: 18px;
@@ -357,9 +353,7 @@ body {
                     padding-top: 15px;
                     padding-bottom: 15px;
                     color: grey;
-                    font-size: 16px;
                 }
-                
             }
         }
     }
