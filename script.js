@@ -7,17 +7,18 @@ let taskIconCount = 0;
 let listElements = new Array();
 let important;
 let tasksHead;
+
 (function init() { 
   let myDay = { element: "My Day",
-              icon: "far fa-sun",
-              id: "my-day",
-              tasks: new Array()
-            };
+                icon: "far fa-sun",
+                id: "my-day",
+                tasks: new Array()
+              };
 important = { element: "Important",
                   icon: "far fa-star",
                   id: "important",
                   tasks: new Array()
-                };
+            };
 let planned = { element: "Planned",
                 icon: "far fa-calendar-alt",
                 id: "planned",
@@ -300,9 +301,9 @@ function addStep() {
 }
 
 var taskStep = document.getElementById("step-input");
-taskStep.addEventListener("input", displayAddOption2);
+taskStep.addEventListener("input", displayStepAddOption);
 
-function displayAddOption2() {
+function displayStepAddOption() {
   if (taskStep.value != "") {
     document.getElementById("add-step-button").setAttribute("class", "display-add-button");
     document.getElementById("add-step-icon").setAttribute("class", "far fa-circle");
