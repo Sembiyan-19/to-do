@@ -1,315 +1,374 @@
-var untitledListCount = 0;
-let presentElement;
+let untitledListCount = 0;
+let categoryId;
 let presentTask;
 let taskCount = 0;
 let importantIconCount = 0;
 let taskIconCount = 0;
-let listElements = new Array();
-let important;
-let tasksHead;
+let categories = new Array();
+let isAddTaskClicked = false;
+let dummy;
 
-(function init() { 
-  let myDay = { element: "My Day",
-                icon: "far fa-sun",
-                id: "my-day",
-                tasks: new Array()
-              };
-important = { element: "Important",
-                  icon: "far fa-star",
-                  id: "important",
-                  tasks: new Array()
-            };
-let planned = { element: "Planned",
-                icon: "far fa-calendar-alt",
-                id: "planned",
-                tasks: new Array()
-              };
-let assignedToYou = { element: "Assigned to you",
-                      icon: "far fa-user",
-                      id: "assigned-to-you",
-                      tasks: new Array()
-                    };
-tasksHead = { element: "Tasks",
-              icon: "fas fa-home",
-              id: "tasks",
-              tasks: new Array()
-            };
-listElements = [myDay, important, planned, assignedToYou, tasksHead];
-  for (var i = 0; i < listElements.length; i++) {
-      var listElement = listElements[i];
-    createListElement(listElement);
-  }
-presentElement = listElements[4];
-displayTaskList(presentElement);
-})();
+document.getElementById("category-list").addEventListener("click", showTasks);
+document.getElementById("add-button").addEventListener("click", createTask);
+document.getElementById("task-input").addEventListener("input", displayAddOption);
+document.getElementById("task-list").addEventListener("click", handleTaskClick);
+document.getElementById("add-step-button").addEventListener("click", createStep)
+document.getElementById("step-input").addEventListener("input", displayAddOption);
 
-function newListElement(event) {
-  if (13 == event.keyCode) {
-    var newListItem = document.getElementById("input-element").value;
-    if ("" == newListItem) {
-      untitledListCount++;
+categories = [createCategoryObject("My Day", "far fa-sun", "my-day"), 
+                  createCategoryObject("Important", "far fa-star", "important"), 
+                  createCategoryObject("Planned", "far fa-calendar-alt", "planned"), 
+                  createCategoryObject("Assigned to you", "far fa-user", "assigned-to-you"), 
+                  createCategoryObject("Tasks", "fas fa-home", "tasks")];
+
+/*
+ * Create and returns a category object
+ */
+function createCategoryObject(name, iconClass, elementId) {
+  return { element: name,
+           icon: iconClass,
+           id: elementId,
+           tasks: new Array()
+         }
+}
+
+function init() {
+  categories.forEach( (category) =>  {
+    addCategory(category);
+  });
+  categoryId = categories[4].id;
+  displayTaskList(categories[4]);
+  highlightCurrentCategory(categoryId, categoryId);
+}
+
+function highlightCurrentCategory(categoryId, previousCategoryId) {
+  document.getElementById(previousCategoryId).setAttribute("class", "list-element");
+  document.getElementById(categoryId).setAttribute("class", "list-element current-element");
+}
+
+/*
+ * Creates a new category object
+ */
+function createCategory(event) {
+  if (13 === event.keyCode) {
+    let newListItem = document.getElementById("category-input").value;
+    untitledListCount++;
+    if ("" === newListItem) {
       newListItem = "Untitled list (" + untitledListCount + ")";
     }
-    var addedItem = { element: newListItem,
-                        icon: "fas fa-list-ul",
-                        id: "added-list-item-" + untitledListCount,
-                        tasks: new Array()
-                      };
-    listElements.push(addedItem);
-    createListElement(addedItem);
+    let addedItem = createCategoryObject(newListItem, "fas fa-list-ul",
+        "added-list-item-" + untitledListCount);
+    categories.push(addedItem);
+    addCategory(addedItem);
+    let previousCategoryId = categoryId;
+    categoryId = addedItem.id;
+    highlightCurrentCategory(categoryId, previousCategoryId);
+    displayTaskList(addedItem);
+    document.getElementById("category-input").value = "";
   }
 }
 
-function createListElement(listElement) {
-  var list = document.getElementById("elements-list");
-  var listItem = document.createElement("Li");
-  listItem.setAttribute("class", "list-element");
-  listItem.setAttribute("id", listElement.id);
-  var listIcon = document.createElement("i");
-  listIcon.setAttribute("class", listElement.icon);
-  listItem.appendChild(listIcon);
-  var listText = document.createElement("span");
-  listItem.appendChild(listText);
-  listText.innerHTML = listElement.element;
-  list.appendChild(listItem);
+/*
+ * Creates a list element for the category and appends it to the Category list
+ */
+function addCategory(currentCategory) {
+  let list = document.getElementById("category-list");
+  let listItem = createNewElement("Li", "list-element", currentCategory.id);
+  let listIcon = createNewElement("i", currentCategory.icon, "");
+  let listText = createNewElement("div", "category-content", "");
+  let count = createNewElement("span", "task-count", currentCategory.id + "-task-count")
+  listText.innerHTML = currentCategory.element;
+  list.appendChild(listItem).append(listIcon, listText, count);
 }
 
-let centerDiv = document.getElementById("center-div");
-document.getElementById("elements-list").addEventListener("click", showTasks);
-
+/*
+ * Shows the list of tasks
+ */
 function showTasks(event) {
+  
   let elementId = event.target.id;
-  centerDiv.setAttribute("class", "center-div full-width");
-  for (var i = 0; i < listElements.length; i++) {
-    if (elementId == listElements[i].id) {
-      presentElement = listElements[i];
-      displayTaskList(presentElement);
+  categories.forEach( (category) => {
+    if (elementId === category.id) {
+      let previousCategoryId = categoryId;
+      categoryId = elementId;
+      document.getElementById("tasks-container").setAttribute("class", "tasks-container full-width");
+      document.getElementById("steps-container").style.display = "none";
+      highlightCurrentCategory(categoryId, previousCategoryId);
+      displayTaskList(category);
     }
-  }
+  });
 }
 
-function displayTaskList(currentElement) {
-  document.getElementById("heading").innerHTML = currentElement.element;
-  displayTasks(currentElement.tasks);
-  displayLines(currentElement.tasks.length);
+/*
+ * Creates the task list and a empty list in the tasks field
+ */
+function displayTaskList(currentCategory) {
+  document.getElementById("tasks-heading").innerHTML = currentCategory.element;
+  displayTasks(currentCategory.tasks);
+  displayLines(currentCategory.tasks.length);
 }
 
-function newTask(event) {
-  if (13 == event.keyCode) {
-    addTask();
-  }
-}
-
-function addTask() {
-  document.getElementById("add-button").setAttribute("class", "hide-add-button");
-    let inputValue = document.getElementById("task-input").value;
-    if ("" != inputValue) {
-      taskCount++;
-      taskIconCount++;
-      importantIconCount++;
-      let importantElement = "no"
-      if (presentElement.id == "important") {
-        importantElement = "yes";
-      }
-      let newTask = { taskName: inputValue,
-                      steps: new Array(),
-                      id: "task-" + taskCount,
-                      completed: "no",
-                      important: importantElement,
-                      taskIconId: "task-icon-" + taskIconCount,
-                      importantIconId: "important-icon-"+importantIconCount
-                    }
-      presentElement.tasks.unshift(newTask);
-      if (presentElement.id != "tasks") {
-        tasksHead.tasks.unshift(newTask);
-      }
-      displayTasks(presentElement.tasks);
-      displayLines(presentElement.tasks.length);
-    }
-    document.getElementById("task-input").value = "";
-}
-
+/*
+ * Creates a list element and appends it to the Tasks list of the current category
+ */
 function displayTasks(tasks) {
+  let importantIcon;
+  let taskIcon;
   let taskList = document.getElementById("task-list");
   taskList.innerHTML = "";
-  for (let i = 0; i < tasks.length; i++) {
-    var taskItem = document.createElement("li");
-    taskItem.setAttribute("class", "task-element");
-    taskItem.setAttribute("id", tasks[i].id);
-    let taskIcon = document.createElement("i");
-    taskIcon.setAttribute("id", tasks[i].taskIconId);
-    let taskContent = document.createElement("span");
-    taskContent.setAttribute("id", tasks[i].id + "-content");
-    if (tasks[i].completed == "yes") {
-      taskIcon.setAttribute("class", "fas fa-check-circle");
-      taskContent.innerHTML = tasks[i].taskName.strike();
+  tasks.forEach( (currentTask) => {
+    let taskItem = createNewElement("li", "task-element", currentTask.id);
+    let taskContent = createNewElement("div", "task-content", currentTask.id + "-content");
+    if (currentTask.completed === true) {
+      taskIcon = createNewElement("i", "fas fa-check-circle", currentTask.taskIconId);
+      taskContent.innerHTML = currentTask.taskName.strike();
     } else {
-      taskIcon.setAttribute("class", "far fa-circle");
-      taskContent.innerHTML = tasks[i].taskName;
+      taskIcon = createNewElement("i", "far fa-circle", currentTask.taskIconId);
+      taskContent.innerHTML = currentTask.taskName;
     }
-    let importantIcon = document.createElement("i");
-    importantIcon.setAttribute("id", tasks[i].importantIconId);
-    if (tasks[i].important == "yes") {
-      importantIcon.setAttribute("class", "fas fa-star important-checked");
+    if (currentTask.important === true) {
+      importantIcon = createNewElement("i", "fas fa-star important-checked", currentTask.importantIconId);
     } else {
-      importantIcon.setAttribute("class", "far fa-star");
+      importantIcon = createNewElement("i", "far fa-star", currentTask.importantIconId);
     }
-    taskItem.appendChild(taskIcon);
-    taskItem.appendChild(taskContent);
-    taskItem.appendChild(importantIcon)
-    taskList.appendChild(taskItem);
-  }
+    taskList.appendChild(taskItem).append(taskIcon, taskContent, importantIcon);
+  })
 }
 
+/*
+ * Creates a empty list element  and appends it to the tasks list
+ */
 function displayLines(numberOfTasks) {
   let taskList = document.getElementById("task-list");
-  if (numberOfTasks < 9) {
-    let additionalLines = 9 - numberOfTasks;
+  if (numberOfTasks < 10) {
+    let additionalLines = 10 - numberOfTasks;
     for (let i = 0; i < additionalLines; i++) {
-      var taskItem = document.createElement("li");
-      taskItem.setAttribute("class", "empty-element");
+      let taskItem = createNewElement("li", "empty-element", "");
       taskList.appendChild(taskItem);
     }
   }
 }
 
-var taskInupt = document.getElementById("task-input");
-taskInupt.addEventListener("input", displayAddOption);
-document.getElementById("add-button").addEventListener("click", addTask);
-
-function displayAddOption() {
-  if (taskInupt.value != "") {
-    document.getElementById("add-button").setAttribute("class", "display-add-button");
-    document.getElementById("add-task-icon").setAttribute("class", "far fa-circle");
-  } else {
+/*
+ * Creates a new task and adds the task to the current category
+ */
+function createTask(event) {
+  if (13 === event.keyCode || event.target.id == "add-button") {
     document.getElementById("add-button").setAttribute("class", "hide-add-button");
     document.getElementById("add-task-icon").setAttribute("class", "fas fa-plus");
+    let inputValue = document.getElementById("task-input").value;
+    if ("" != inputValue) {
+      let newTask = getTaskObject(inputValue);
+      let currentCategory = getCategory(categoryId);
+      currentCategory.tasks.unshift(newTask);
+      if (categoryId != "tasks") {
+        categories[4].tasks.unshift(newTask);
+        document.getElementById("tasks-task-count").innerHTML = getIncompleteTaskCount(categories[4].tasks);
+      }
+      displayTaskList(currentCategory);
+      document.getElementById(currentCategory.id + "-task-count").innerHTML = getIncompleteTaskCount(currentCategory.tasks);
+    }
+    
+    document.getElementById("task-input").value = "";
+    isAddTaskClicked = false;
   }
 }
 
-document.getElementById("task-list").addEventListener("click", showSteps);
-let rightDiv = document.getElementById("right-div");
+/*
+ * Creates and returns a task object
+ */
+function getTaskObject(name) {
+  taskCount++;
+  taskIconCount++;
+  importantIconCount++;
+  let isImportant = false;
+  if (categoryId === "important") {
+    isImportant = true;
+  }
+  return { taskName: name,
+           steps: new Array(),
+           id: "task-" + taskCount,
+           completed: false,
+           important: isImportant,
+           taskIconId: "task-icon-" + taskIconCount,
+           importantIconId: "important-icon-"+importantIconCount,
+           stepHeadIcon: "task-" + taskCount + "-check-icon",
+           stepImportantIcon: "task-" + taskCount + "-important-icon"
+         }
+} 
 
-function showSteps(event) {
+/*
+ * Detects which elemeent is clicked (completeed icon, important icon, or task element)
+ * and decides which operation to be performed
+ */
+function handleTaskClick(event) {
+  let currentCategory = getCategory(categoryId);
   let elementId = event.target.id;
-  for (let i = 0; i < presentElement.tasks.length; i++) {
-    presentTask = presentElement.tasks[i];
-    if (elementId == presentTask.taskIconId) {
-      markComplete(presentTask, elementId);
-    } else if (elementId == presentElement.tasks[i].importantIconId) {
-      markImportant(presentTask, elementId, i);
-    } else if (elementId == presentElement.tasks[i].id) {
+  for (let i = 0; i < currentCategory.tasks.length; i++) {
+    presentTask = currentCategory.tasks[i];
+    if (elementId === presentTask.taskIconId || elementId === presentTask.stepHeadIcon) {
+      displayStepsContainer(presentTask);
+      if (presentTask.completed) {
+        markComplete(presentTask, "far fa-circle", presentTask.taskName, false);
+      } else {
+        markComplete(presentTask, "fas fa-check-circle", presentTask.taskName.strike(), true);
+      }
+    } else if (elementId === presentTask.importantIconId || elementId === presentTask.stepImportantIcon) {
+        displayStepsContainer(presentTask);
+        if (presentTask.important) {
+          for (let j = 0; j < categories[1].tasks.length; j++) {
+            if (elementId === categories[1].tasks[j].importantIconId 
+                  || elementId === categories[1].tasks[j].stepImportantIcon) {
+              categories[1].tasks.splice(j, 1);
+            }
+          }
+          displayTaskList(getCategory(categoryId));
+          markImportant(presentTask, "far fa-star", false, getIncompleteTaskCount(categories[1].tasks));
+        } else {
+          categories[1].tasks.push(presentTask);
+          markImportant(presentTask, "fas fa-star important-checked", true, getIncompleteTaskCount(categories[1].tasks));
+        }
+    } else if (elementId === presentTask.id) {
+      document.getElementById("tasks-container").setAttribute("class", "tasks-container half-width");
+      document.getElementById("steps-container").style.display = "inline-block";
       displayStepsContainer(presentTask);
     }
   }
 }
 
-function markComplete(currentTask, elementId) {
-  if ("no" == currentTask.completed) {
-    currentTask.completed = "yes";
-    document.getElementById(elementId).setAttribute("class", "fas fa-check-circle");
-    document.getElementById(currentTask.id + "-content").innerHTML = currentTask.taskName.strike();
-    document.getElementById(currentTask.id + "-check-icon").setAttribute("class", "fas fa-check-circle");
-    document.getElementById(currentTask.id + "-heading").innerHTML = currentTask.taskName.strike();
-  } else if ("yes" == currentTask.completed) {
-    currentTask.completed = "no";
-    document.getElementById(elementId).setAttribute("class", "far fa-circle");
-    document.getElementById(currentTask.id + "-content").innerHTML = currentTask.taskName;
-    document.getElementById(currentTask.id + "-check-icon").setAttribute("class", "far fa-circle");
-    document.getElementById(currentTask.id + "-heading").innerHTML = currentTask.taskName;
-  }
+/*
+ * Marks the task as important/non-important
+ */
+function markImportant(currentTask, className, isImportant, importantTaskCount) {
+  currentTask.important = isImportant;
+  document.getElementById("important-task-count").innerHTML = importantTaskCount;
+  document.getElementById(currentTask.importantIconId).setAttribute("class", className);
+  document.getElementById(currentTask.stepImportantIcon).setAttribute("class", className);
 }
 
-function markImportant(currentTask, elementId, index) {
-  if ("no" == currentTask.important) {
-    currentTask.important = "yes"
-    document.getElementById(elementId).setAttribute("class", "fas fa-star important-checked");
-    important.tasks.push(currentTask);
-    document.getElementById(currentTask.id + "-important-icon").setAttribute("class", "fas fa-star important-checked");
-  } else if ("yes" == currentTask.important) {
-    currentTask.important = "no"
-    document.getElementById(elementId).setAttribute("class", "far fa-star");
-    important.tasks.splice(index, 1);
-    displayTaskList(presentElement);
-    document.getElementById(currentTask.id + "-important-icon").setAttribute("class", "far fa-star");
-  }
+/*
+ * Marks the task as comleted/incomplete
+ */
+function markComplete(currentTask, className, taskName, isCompleted) {
+    let currentCategory = getCategory(categoryId);
+    currentTask.completed = isCompleted;
+    document.getElementById(currentTask.taskIconId).setAttribute("class", className);
+    document.getElementById(currentTask.id + "-content").innerHTML = taskName;  
+    document.getElementById(currentTask.stepHeadIcon).setAttribute("class", className);
+    document.getElementById(currentTask.id + "-heading").innerHTML = taskName;
+    document.getElementById(currentCategory.id + "-task-count").innerHTML = getIncompleteTaskCount(currentCategory.tasks);
+    document.getElementById(categories[4].id + "-task-count").innerHTML = getIncompleteTaskCount(categories[4].tasks);
 }
 
+/*
+ * Displays the steps container
+ */
 function displayStepsContainer(currentTask) {
-  centerDiv.setAttribute("class", "center-div half-width");
-  rightDiv.style.display = "inline-block";
+  let importantIcon;
+  let headerIcon;
   let headElement = document.getElementById("steps-header");
   headElement.innerHTML = "";
-  var headerIcon = document.createElement("i");
-  headerIcon.setAttribute("id", currentTask.id + "-check-icon");
-  let taskHeader = document.createElement("h4");
-  taskHeader.setAttribute("id", currentTask.id + "-heading");
-  taskHeader.setAttribute("class", "task-heading");
-  if (currentTask.completed == "yes") {
-    headerIcon.setAttribute("class", "fas fa-check-circle");
+  let taskHeader = createNewElement("h4", "task-heading", currentTask.id + "-heading");
+  if (currentTask.completed === true) {
+    headerIcon = createNewElement("i", "fas fa-check-circle", currentTask.stepHeadIcon);
     taskHeader.innerHTML = currentTask.taskName.strike();
   } else {
-    headerIcon.setAttribute("class", "far fa-circle");
+    headerIcon = createNewElement("i", "far fa-circle", currentTask.stepHeadIcon);
     taskHeader.innerHTML = currentTask.taskName;
   }
-  let importantIcon = document.createElement("i");
-  importantIcon.setAttribute("id", currentTask.id + "-important-icon");
-  if (currentTask.important == "yes") {
-    importantIcon.setAttribute("class", "fas fa-star important-checked");
+  if (currentTask.important === true) {
+    importantIcon = createNewElement("i", "fas fa-star important-checked", currentTask.stepImportantIcon);
   } else {
-    importantIcon.setAttribute("class", "far fa-star");
+    importantIcon = createNewElement("i", "far fa-star", currentTask.stepImportantIcon);
   }
-  headElement.appendChild(headerIcon);
-  headElement.appendChild(taskHeader);
-  headElement.appendChild(importantIcon);
+  headerIcon.setAttribute("onclick", "handleTaskClick(event)");
+  importantIcon.setAttribute("onclick", "handleTaskClick(event)");
+  headElement.append(headerIcon, taskHeader, importantIcon);
   displaySteps(currentTask.steps);
 }
 
+/*
+ * Adds a new step to the current task
+ */
+function createStep(event) {
+  if (13 === event.keyCode || event.target.id == "add-step-button") {
+    document.getElementById("add-step-button").setAttribute("class", "hide-add-button");
+    document.getElementById("add-step-icon").setAttribute("class", "fas fa-plus");
+    let newStep = document.getElementById("step-input").value;
+    if (newStep != "") {
+      presentTask.steps.push(newStep);
+      displaySteps(presentTask.steps);
+    }
+    document.getElementById("step-input").value = "";
+  }
+}
+
+/*
+ * Creates a list element and appends it to the steps list
+ */
 function displaySteps(steps) {
   let stepList = document.getElementById("steps-list");
   stepList.innerHTML = "";
-  for (let i = 0; i < steps.length; i++) {
-    let stepItem = document.createElement("li");
-    stepItem.setAttribute("class", "step-element");
-    let stepIcon = document.createElement("i");
-    stepIcon.setAttribute("class", "far fa-circle");
-    let stepContent = document.createElement("div");
-    stepContent.setAttribute("class", "step-content")
-    stepContent.innerHTML = steps[i];
-    stepItem.appendChild(stepIcon);
-    stepItem.appendChild(stepContent);
-    stepList.appendChild(stepItem);
+  steps.forEach ( (step) => {
+    let stepItem = createNewElement("li", "step-element", "");
+    let stepIcon = createNewElement("i", "far fa-circle", "");
+    let stepContent = createNewElement("div", "step-content", "")
+    stepContent.innerHTML = step;
+    stepList.appendChild(stepItem).append(stepIcon, stepContent);
+  })
+}
+
+function displayAddOption(event) {
+  if (event.target.id === "task-input") {
+    setAddButtonProperty("task-input", "add-button", "add-task-icon", "display-add-button  add-task-button",
+         "hide-add-button  add-task-button");
+  } else if (event.target.id === "step-input") {
+    setAddButtonProperty("step-input", "add-step-button", "add-step-icon", "display-add-button  add-step-button", 
+         "hide-add-button  add-step-button");
   }
 }
 
-document.getElementById("add-step-button").addEventListener("click", addStep)
-
-function newStep(event) {
-  if (13 == event.keyCode) {
-    addStep();
-  }
-}
-
-function addStep() {
-  document.getElementById("add-step-button").setAttribute("class", "hide-add-button");
-  let newStep = document.getElementById("step-input").value;
-  if (newStep != "") {
-    presentTask.steps.push(newStep);
-    displaySteps(presentTask.steps);
-  }
-  document.getElementById("step-input").value = "";
-}
-
-var taskStep = document.getElementById("step-input");
-taskStep.addEventListener("input", displayStepAddOption);
-
-function displayStepAddOption() {
-  if (taskStep.value != "") {
-    document.getElementById("add-step-button").setAttribute("class", "display-add-button");
-    document.getElementById("add-step-icon").setAttribute("class", "far fa-circle");
+function setAddButtonProperty(inputId, addButtonId, addTaskIcon, displayAddClass, hideAddClass) {
+  if (document.getElementById(inputId).value === "") {
+    document.getElementById(addButtonId).setAttribute("class", hideAddClass);
+    document.getElementById(addTaskIcon).setAttribute("class", "fas fa-plus");
   } else {
-    document.getElementById("add-step-button").setAttribute("class", "hide-add-button");
-    document.getElementById("add-step-icon").setAttribute("class", "fas fa-plus");
+    document.getElementById(addButtonId).setAttribute("class", displayAddClass);
+    document.getElementById(addTaskIcon).setAttribute("class", "far fa-circle",);
   }
 }
 
+/*
+ * Returns the present category
+ */
+function getCategory(idOfCategory) {
+  for (let i = 0; i < categories.length; i++) {
+    if (idOfCategory === categories[i].id) {
+      return categories[i];
+    }
+  }
+}
+
+/*
+ * Creates and returns a new HTML element
+ */
+createNewElement = (element, className, id) => {
+  let createdElement = document.createElement(element);
+  createdElement.setAttribute("class", className);
+  if ("" != id) {
+    createdElement.setAttribute("id", id);
+  }
+  return createdElement;
+}
+
+function getIncompleteTaskCount(tasks) {
+  let count = 0;
+  tasks.forEach( (task) => {
+    if (task.completed === false) {
+      count++;
+    }
+  });
+  return count;
+}
+
+init();

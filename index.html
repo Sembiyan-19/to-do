@@ -21,14 +21,14 @@
       <i class="far fa-user-circle"></i> 
     </div>
     <div class="main-container">
-      <div class="left-div">
-        <ul id="elements-list"></ul>
-        <div class="input-container">
+      <div class="category-container">
+        <ul id="category-list" class="category-list-container"></ul>
+        <div class="category-input-container">
           <i class="fas fa-plus"></i>
-          <input id="input-element" placeholder="New List" type="text"
-           onkeypress="newListElement(event)">
+          <input id="category-input" class="category-input" placeholder="New List" type="text"
+           onkeypress="createCategory(event)">
         </div>
-        <div class="bottom-icons">
+        <div class="bottom-icons-container">
           <i class="far fa-envelope bottom-icon"></i>
           <i class="far fa-calendar-alt bottom-icon"></i>
           <i class="fas fa-user-friends bottom-icon"></i>
@@ -36,24 +36,24 @@
           <i class="fas fa-check bottom-icon"></i>
         </div>
       </div>
-      <div class="center-div full-width" id="center-div">
-        <h3 id="heading" class="header"></h3>
+      <div class="tasks-container full-width" id="tasks-container">
+        <h3 id="tasks-heading" class="category-name"></h3>
         <div class="task-input-container">
           <i id="add-task-icon" class="fas fa-plus"></i>
-          <input id="task-input" onkeypress="newTask(event)" placeholder="Add a task">
-          <div class="hide-add-button" id="add-button">ADD</div>
+          <input id="task-input" class="task-input" onkeypress="createTask(event)" placeholder="Add a task">
+          <div class="hide-add-button add-task-button" id="add-button">ADD</div>
         </div>
-        <ul id="task-list"></ul>
+        <ul id="task-list" class="tasks-list-container"></ul>
       </div>
-      <div id="right-div">
-        <div id="steps-container">
-          <div id="steps-header">
+      <div id="steps-container" class="steps-container">
+        <div class="steps-head-container">
+          <div id="steps-header" class="steps-head-element">
           </div>
-          <ul id="steps-list"></ul>
-          <div class="step-input">
+          <ul id="steps-list" class="steps-list-container"></ul>
+          <div class="step-input-container">
             <i id="add-step-icon" class="fas fa-plus"></i>
-            <input id="step-input" placeholder="Add step" onkeypress="newStep(event)">
-            <div class="hide-add-button" id="add-step-button">ADD</div>
+            <input id="step-input" class="step-input" placeholder="Add step" onkeypress="createStep(event)">
+            <div class="hide-add-button add-step-button" id="add-step-button">ADD</div>
           </div>
         </div>
         <div class="other-option">
