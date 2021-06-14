@@ -41,6 +41,9 @@ function init() {
   highlightCurrentCategory(categoryId, categoryId);
 }
 
+/*
+ * Highights the current category
+ */
 function highlightCurrentCategory(categoryId, previousCategoryId) {
   document.getElementById(previousCategoryId).setAttribute("class", "list-element");
   document.getElementById(categoryId).setAttribute("class", "list-element current-element");
@@ -119,14 +122,14 @@ function displayTasks(tasks) {
   tasks.forEach( (currentTask) => {
     let taskItem = createNewElement("li", "task-element", currentTask.id);
     let taskContent = createNewElement("div", "task-content", currentTask.id + "-content");
-    if (currentTask.completed === true) {
+    if (true === currentTask.completed) {
       taskIcon = createNewElement("i", "fas fa-check-circle", currentTask.taskIconId);
       taskContent.innerHTML = currentTask.taskName.strike();
     } else {
       taskIcon = createNewElement("i", "far fa-circle", currentTask.taskIconId);
       taskContent.innerHTML = currentTask.taskName;
     }
-    if (currentTask.important === true) {
+    if (true === currentTask.important) {
       importantIcon = createNewElement("i", "fas fa-star important-checked", currentTask.importantIconId);
     } else {
       importantIcon = createNewElement("i", "far fa-star", currentTask.importantIconId);
@@ -153,7 +156,7 @@ function displayLines(numberOfTasks) {
  * Creates a new task and adds the task to the current category
  */
 function createTask(event) {
-  if (13 === event.keyCode || event.target.id == "add-button") {
+  if (13 === event.keyCode || event.target.id === "add-button") {
     document.getElementById("add-button").setAttribute("class", "hide-add-button");
     document.getElementById("add-task-icon").setAttribute("class", "fas fa-plus");
     let inputValue = document.getElementById("task-input").value;

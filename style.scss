@@ -40,6 +40,7 @@ body {
             }
             &:hover {
                 background-color: white;
+                cursor: pointer;
             }
         }
         .fa-cog, .fa-question, .fa-comment-alt {
@@ -102,6 +103,7 @@ body {
                     }
                     &:hover {
                         background-color: white;
+                        cursor: pointer;
                     }
                 }
                 .fa-sun, .fa-star, .fa-calendar-alt, .fa-user, .fa-home, .fa-list-ul {
@@ -175,6 +177,7 @@ body {
                     font-size: 14px;
                     &:hover {
                         background-color: $primary-gray;
+                        cursor: pointer;
                     }
                     .task-content {
                         width: 88%;
@@ -232,6 +235,9 @@ body {
                     color: $primary-blue;
                     font-size: 14px;
                     margin-bottom: 17px;
+                    &:hover {
+                        cursor: pointer;
+                    }
                 }
             }
         }
@@ -252,6 +258,9 @@ body {
                         padding-right: 17px;
                         font-size: 18px;
                         margin-left: 15px;
+                        &:hover {
+                            cursor: pointer;
+                        }
                     }
                     .task-heading {
                         width: 76%;
@@ -263,6 +272,9 @@ body {
                         font-size: 13px;
                         margin-bottom: 16px;
                         margin-right: 5px;
+                        &:hover {
+                            cursor: pointer;
+                        }
                     }
                 }            
                 .step-input-container {
@@ -270,6 +282,9 @@ body {
                         margin-bottom: 10px;
                         color: $primary-blue;
                         font-size: 11px;
+                        &:hover {
+                            cursor: pointer;
+                        }
                     }
                     .step-input {
                         border: none;
